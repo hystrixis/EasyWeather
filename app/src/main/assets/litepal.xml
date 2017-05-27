@@ -1,0 +1,12 @@
+<litepal>
+    <!--数据库名称-->
+    <dbname value="easy_weather"/>
+    <!--数据库版本-->
+    <version value="1"/>
+    <!--将三个实体类添加到映射列表中-->
+    <list>
+        <mapping class="com.example.huang.easyweather.data.Province"/>
+        <mapping class="com.example.huang.easyweather.data.City"/>
+        <mapping class="com.example.huang.easyweather.data.County"/>
+    </list>
+</litepal>
