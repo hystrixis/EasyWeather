@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.huang.easyweather.AddCity"
+    android:background="@color/colorPrimary">
+    <EditText
+        android:id="@+id/search_city"
+        android:layout_width="match_parent"
+        android:layout_height="30pt"
+        android:hint="请输入城市名称"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
+        android:imeOptions="actionSearch"
+        android:maxLines="1"
+        android:inputType="text"
+       />
+    <Button
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="搜索"/>
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/recycler_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+  </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:text="热门城市"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#fff"/>
+
+</LinearLayout>
