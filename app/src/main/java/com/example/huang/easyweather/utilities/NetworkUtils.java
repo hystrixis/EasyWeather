@@ -9,12 +9,12 @@ import okhttp3.Request;
  */
 
 public class NetworkUtils {
-    public static void sendOkHttpRequest(String cityAddressJson,okhttp3.Callback callback){
+    public static void sendOkHttpRequest(String address,okhttp3.Callback callback){
         //创建okHttpClient对象
         OkHttpClient client=new OkHttpClient();
         //创建一个Request
         Request request=new Request.Builder()
-                .url(cityAddressJson)
+                .url(address)
                 .build();
         //new call
         Call call=client.newCall(request);

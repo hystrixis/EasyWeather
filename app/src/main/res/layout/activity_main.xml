@@ -3,8 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.example.huang.easyweather.MainActivity">
+    <!--theme:使得ToolBar单独使用深色主题-->
+    <!--popupTheme:使得弹出的菜单项单独使用浅色主题-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    </android.support.v7.widget.Toolbar>
     <Button
         android:id="@+id/go_queryCity"
         android:layout_width="match_parent"
@@ -15,5 +27,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="删除City数据库" />
+    <Button
+        android:id="@+id/goto_weather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="进入天气界面"/>
 
 </LinearLayout>

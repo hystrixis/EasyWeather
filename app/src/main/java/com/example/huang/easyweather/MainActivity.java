@@ -3,6 +3,7 @@ package com.example.huang.easyweather;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,12 +16,17 @@ import org.litepal.util.Const;
 public class MainActivity extends AppCompatActivity {
     private Button mSearchCity;
     private Button deleteCity;
+    private Button gotoWeather;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //设置标题栏
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
         mSearchCity=(Button)findViewById(R.id.go_queryCity);
         deleteCity=(Button)findViewById(R.id.delete_database);
+        gotoWeather=(Button)findViewById(R.id.goto_weather);
         mSearchCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
                // deleteDatabase("easy_weather");
                 DataSupport.deleteAll(City.class);
                 Log.d("MainActivity","删除城市数据库成功");
+            }
+        });
+        gotoWeather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,WeatherActivity.class);
+                startActivity(intent);
             }
         });
     }

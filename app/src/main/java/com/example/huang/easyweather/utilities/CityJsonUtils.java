@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.example.huang.easyweather.AddCity;
 import com.example.huang.easyweather.MainActivity;
 import com.example.huang.easyweather.data.City;
+import com.example.huang.easyweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,16 +32,6 @@ import okhttp3.Response;
  */
 
 public class CityJsonUtils {
-    private ProgressDialog progressDialog;
-
-
-
-
-    /**
-     * 城市列表
-     */
-
-
 
     /*
     解析和处理服务器返回的县级数据
@@ -70,41 +62,16 @@ public class CityJsonUtils {
                     city.setLeaderZh(cityObject.getString("leaderZh"));//所属市级中文名
                     city.setProvinceZh(cityObject.getString("provinceZh"));//所属省级中文名
                     city.setCountryZh(cityObject.getString("countryZh"));//所属国家中文名
-
                     //储存在数据库中
                     city.save();
-
-                   // Log.d("AddCity","获取的JSON数据存储到数据库成功");
                 }
                 return true;
             }catch (JSONException e){
                 e.printStackTrace();
             }
         return false;
-
     }
 
-
-//    /**
-//     * 显示进度对话框
-//     */
-//    public  void showProgressDialog() {
-//        if (progressDialog == null) {
-//            progressDialog = new ProgressDialog();
-//            progressDialog.setMessage("正在加载...");
-//            progressDialog.setCanceledOnTouchOutside(false);
-//        }
-//        progressDialog.show();
-//    }
-//
-//    /**
-//     * 关闭进度对话框
-//     */
-//    public void closeProgressDialog() {
-//        if (progressDialog != null) {
-//            progressDialog.dismiss();
-//        }
-//    }
 
 
 }
