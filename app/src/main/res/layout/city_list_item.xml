@@ -8,10 +8,10 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textColor="#fff"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#dadada"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="#dadada"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_marginRight="8dp" />-->
 </LinearLayout>

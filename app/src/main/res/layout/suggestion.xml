@@ -9,6 +9,12 @@
         android:layout_marginTop="15dp"
         android:text="生活建议"
         android:textSize="20sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#dadada"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:id="@+id/comfort_text"

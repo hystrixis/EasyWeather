@@ -1,4 +1,4 @@
-package com.example.huang.easyweather;
+package com.example.huang.easyweather.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.huang.easyweather.R;
 import com.example.huang.easyweather.data.HotCity;
 
 import java.util.List;

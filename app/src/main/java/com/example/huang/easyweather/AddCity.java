@@ -2,32 +2,24 @@ package com.example.huang.easyweather;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
-import android.icu.text.LocaleDisplayNames;
-import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.huang.easyweather.adapter.CityAdapter;
+import com.example.huang.easyweather.adapter.HotCityAdapter;
 import com.example.huang.easyweather.data.City;
 import com.example.huang.easyweather.data.HotCity;
-import com.example.huang.easyweather.utilities.CityJsonUtils;
 import com.example.huang.easyweather.utilities.NetworkUtils;
 
 import org.litepal.crud.DataSupport;
@@ -95,12 +87,7 @@ public class AddCity extends AppCompatActivity {
 
 
         initlizeHotCity();
-//        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
-//        if(prefs.getString("weather",null)!=null){
-//            Intent intent=new Intent(this,WeatherActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
+
         //处理输入完后的搜索事件
         mSearchCity.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

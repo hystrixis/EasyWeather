@@ -13,7 +13,7 @@
         android:id="@+id/toolbar_add_city"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -24,14 +24,15 @@
         android:id="@+id/search_city"
         android:layout_width="match_parent"
         android:layout_height="30pt"
-        android:hint="请输入城市名称"
         android:layout_margin="20dp"
-        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:hint="请输入城市名称"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
         android:textColor="#ffffff"
         android:textColorHint="#ffffff"
-        android:imeOptions="actionSearch"
-        android:maxLines="1"
-        android:inputType="text" />
+        android:textSize="20sp"/>
     <Button
         android:id="@+id/search"
         android:layout_width="match_parent"
@@ -48,12 +49,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
         android:textColor="#ffffff"
+        android:textSize="20sp"
         android:text="热门城市"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="#fff"/>
+        android:layout_height="1dp"
+        android:background="#fff"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/hotcity_recycler_view"
