@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huang.easyweather.R;
 import com.example.huang.easyweather.gson.HourlyForecast;
@@ -36,7 +37,7 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
 
     @Override
     public int getItemCount() {
-        if(null==hourlyForecastDatas){
+        if(hourlyForecastDatas==null){
             Log.d("WeatherActivity","每小时预报列表为空");
             return 0;
         }else{

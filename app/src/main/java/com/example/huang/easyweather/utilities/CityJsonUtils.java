@@ -56,6 +56,7 @@ public class CityJsonUtils {
                    // String cityZh=cityObject.getString("cityZh");
                   //  Log.d("MainActivity","id is "+id);
                   //  Log.d("MainActivity","city name is "+cityZh);
+
                     City city=new City();
                     city.setCityId(cityObject.getString("id")); //城市id
                     city.setCityZh(cityObject.getString("cityZh"));//城市中文名
@@ -65,6 +66,7 @@ public class CityJsonUtils {
                     //储存在数据库中
                     city.save();
                 }
+
                 return true;
             }catch (JSONException e){
                 e.printStackTrace();

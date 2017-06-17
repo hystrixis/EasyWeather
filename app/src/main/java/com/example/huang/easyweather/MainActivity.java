@@ -15,6 +15,8 @@ import com.example.huang.easyweather.data.City;
 import org.litepal.crud.DataSupport;
 import org.litepal.util.Const;
 
+import luo.library.base.base.BaseAndroid;
+
 public class MainActivity extends AppCompatActivity {
     private Button mSearchCity;
     private Button deleteCity;
@@ -61,5 +63,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         };
+        BaseAndroid.checkUpdate(MainActivity.this, 2,
+                "http://118.89.176.68/downloads/app-release.apk",
+                "快更新吧，相信我，没错的", false);
     }
 }

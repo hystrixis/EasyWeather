@@ -9,7 +9,7 @@
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
@@ -23,7 +23,9 @@
         </activity>
         <activity
             android:name=".AddCity"
-            android:label="添加城市" />
+            android:label="添加城市"
+            android:windowSoftInputMode="stateHidden|adjustUnspecified"
+            />
         <activity android:name=".WeatherActivity" />
         <activity android:name=".CityManager"></activity>
     </application>

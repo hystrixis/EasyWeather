@@ -2,6 +2,8 @@ package com.example.huang.easyweather;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huang.easyweather.adapter.CityAdapter;
 import com.example.huang.easyweather.adapter.HotCityAdapter;
@@ -56,7 +59,7 @@ public class AddCity extends AppCompatActivity {
     private boolean firstRequestWeather=true;
 
     //和风天气城市代码地址
-    private static final String cityAddressJson="https://cdn.heweather.com/china-city-list.json";
+    private static final String cityAddressJson="http://118.89.176.68/china-city-list.json";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,10 +87,7 @@ public class AddCity extends AppCompatActivity {
         hotCityRecyclerView.setAdapter(hotCityAdapter);
         //hotCityRecyclerView.setHasFixedSize(true);
 
-
-
         initlizeHotCity();
-
         //处理输入完后的搜索事件
         mSearchCity.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -105,6 +105,7 @@ public class AddCity extends AppCompatActivity {
                                 intent.putExtra("city_id",mCityId);
                                 startActivity(intent);
                                 firstRequestWeather=false;
+                                finish();
                             }else{
                                 WeatherActivity activity=new WeatherActivity();
                                 activity.requestWeather(mCityId);
@@ -116,9 +117,10 @@ public class AddCity extends AppCompatActivity {
                     });
 
                 }
-                return true;
+                return false;
             }
         });
+
 
         hotCityAdapter.setOnItemClickListener(new HotCityAdapter.OnItemClickListener() {
             @Override
@@ -128,6 +130,7 @@ public class AddCity extends AppCompatActivity {
                     Intent intent=new Intent(AddCity.this,WeatherActivity.class);
                     intent.putExtra("city_id",mCityId);
                     startActivity(intent);
+                    finish();
             }
         });
         mSearch.setOnClickListener(new View.OnClickListener() {
@@ -141,35 +144,40 @@ public class AddCity extends AppCompatActivity {
     /**
      * 根据传入的地址和类型从服务器上查询省市县数据。
      */
-    public void queryCities(String mSearchCity){
+    public void queryCities(String searchCity){
 
         //从数据库查询通过用户输入的城市名称会有多个，而每一个对应了唯一的一个ID
         cityList= DataSupport  //查询得到的全部数据放在cityList中
-                .where("cityZh = ?",mSearchCity)
+                .where("provinceZh = ? or leaderZh = ? or cityZh = ?",searchCity,searchCity,searchCity)
                 .find(City.class);
+//        boolean result=cityList.contains(searchCity);
                 //如果数据库有数据，
 //        if(!firstRequestFromNetWork){
             if(cityList.size()>0) {
+                for ( int i = 0 ; i < cityList.size() - 1 ; i ++ ) {
+                    for ( int j = cityList.size() - 1 ; j > i; j -- ) {
+                        if (cityList.get(j).getCityId().equals(cityList.get(i).getCityId())) {
+                            cityList.remove(j);
+                        }
+                    }
+                }
                 mCityDatas.clear();//显示的列表初始化
-//                for(City city:cityList){
-//                    mCityDatas.add(cityList.get(0));
-////                    mCityDatas.add(city);
-//                    if(null==mCityDatas){
-//                        Toast.makeText(this, "查不到所需要的城市", Toast.LENGTH_SHORT).show();
-//                        Log.d("AddCity","查不到所需要的城市");
-//                    }
-//                }
-                mCityDatas.add(cityList.get(0));
+                for(City city:cityList){
+                    mCityDatas.add(city);
+                }
+
+                //mCityDatas.add(cityList.get(0));
                 cityAdapter.notifyDataSetChanged();
                 Log.d("AddCity","是从数据库查询到的城市");
             }
 //        }
+//        else if(cityList.size()==0){
+//                Toast.makeText(this, "查不到所需要的城市", Toast.LENGTH_SHORT).show();
+//                Log.d("AddCity","查不到所需要的城市");
+//        }
         else{
-            firstRequestFromNetWork=false;
-            queryFromServer(cityAddressJson);
-        }
-
-
+                queryFromServer(cityAddressJson);
+            }
     }
     public void initlizeHotCity(){
         hotCityDatas.clear();
@@ -177,11 +185,11 @@ public class AddCity extends AppCompatActivity {
         HotCity shanghai=new HotCity("上海","CN101020100");;
         HotCity guangzhou=new HotCity("广州","CN101280101");
         HotCity shenzhen=new HotCity("深圳","CN101280601");
-        HotCity hangzhou=new HotCity("杭州","CN101020100");
+        HotCity hangzhou=new HotCity("杭州","CN101210101");
         HotCity nanjing=new HotCity("南京","CN101190101");
         HotCity tianjin=new HotCity("天津","CN101030100");
         HotCity wuhan=new HotCity("武汉","CN101200101");
-        HotCity chongqing=new HotCity("重庆","CN10104010");
+        HotCity chongqing=new HotCity("重庆","CN101040100");
         HotCity chengdu=new HotCity("成都","CN101270101");
         HotCity qingdao=new HotCity("青岛","CN101120201");
         HotCity changsha=new HotCity("长沙","CN101250101");
@@ -205,54 +213,47 @@ public class AddCity extends AppCompatActivity {
         hotCityDatas.add(hongkong);
         hotCityDatas.add(macao);
         hotCityDatas.add(taibei);
-//        hotCityDatas.add(beijing.getCityZh());
-//        hotCityDatas.add(shanghai.getCityZh());
-//        hotCityDatas.add(guangzhou.getCityZh());
-//        hotCityDatas.add(shenzhen.getCityZh());
-//        hotCityDatas.add(hangzhou.getCityZh());
-//        hotCityDatas.add(nanjing.getCityZh());
-//        hotCityDatas.add(tianjin.getCityZh());
-//        hotCityDatas.add(wuhan.getCityZh());
-//        hotCityDatas.add(chongqing.getCityZh());
-//        hotCityDatas.add(chengdu.getCityZh());
-//        hotCityDatas.add(qingdao.getCityZh());
-//        hotCityDatas.add(changsha.getCityZh());
-//        hotCityDatas.add(haerbin.getCityZh());
-//        hotCityDatas.add(hongkong.getCityZh());
-//        hotCityDatas.add(macao.getCityZh());
-//        hotCityDatas.add(taibei.getCityZh());
 
     }
     public void queryFromServer(String cityAddressJson) {
-        showProgressDialog();//加载对话框
-        //建立HTTP连接
-        NetworkUtils.sendOkHttpRequest(cityAddressJson, new Callback() {
+//        if(firstRequestFromNetWork){ //如果第一次从网络加载
+            showProgressDialog();//加载对话框
+            //建立HTTP连接
+            NetworkUtils.sendOkHttpRequest(cityAddressJson, new Callback() {
 
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("AddCity","HTTP连接失败");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String returnCityName=response.body().string(); //设置希望返回的字符串
-                boolean result=false;
-                result=handleCityResponse(returnCityName);//处理返回的JSON数据
-
-                if(result){ //如果成功处理,就开始查询
-                    runOnUiThread(new Runnable() {
-
-                       @Override
-                       public void run() {
-                           closeProgressDialog();
-                           Log.d("AddCity","从网络上查询到的城市");
-                           queryCities(String.valueOf(mSearchCity.getText().toString()));
-                           Log.d("AddCity","查询"+mSearchCity.getText()+"成功");
-                       }
-                   });
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d("AddCity","HTTP连接失败");
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String returnCityName=response.body().string(); //设置希望返回的字符串
+                    boolean result=false;
+                    result=handleCityResponse(returnCityName);//处理返回的JSON数据
+
+                    if(result){ //如果成功处理,就开始查询
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                closeProgressDialog();
+                                Log.d("AddCity","从网络上查询到的城市");
+//                           if(mSearchCity.getText())
+                                queryCities(String.valueOf(mSearchCity.getText().toString()));
+                                Log.d("AddCity","查询"+mSearchCity.getText()+"成功");
+                            }
+                        });
+                    }
+                else{
+
+                        closeProgressDialog();
+                        Looper.prepare();
+                        Toast.makeText(AddCity.this, "查不到所需要的城市，请检查输入是否正确", Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+                    }
+                }
+            });
     }
 
     /**
