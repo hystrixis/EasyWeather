@@ -72,4 +72,14 @@ public class City extends DataSupport {
     public void setLat(double lat) {
         this.lat = lat;
     }
+
+    public City() {
+    }
+
+    public City(String cityId, String cityZh) {
+        this.cityId = cityId;
+        this.cityZh = cityZh;
+    }
+
+
 }

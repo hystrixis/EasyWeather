@@ -2,8 +2,10 @@ package com.example.huang.easyweather;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -45,7 +50,6 @@ public class AddCity extends AppCompatActivity {
 //            "重庆","成都","青岛","长沙",
 //            "哈尔滨","香港","澳门","台北"};
     private List<HotCity> hotCityDatas=new ArrayList<>();
-    private List<HotCity> hotCityList;
     private List<City> mCityDatas=new ArrayList<>();//当前视图列表
     private  ProgressDialog progressDialog;
     private EditText mSearchCity;
@@ -57,6 +61,7 @@ public class AddCity extends AppCompatActivity {
     private HotCityAdapter hotCityAdapter;
     private boolean firstRequestFromNetWork=true;
     private boolean firstRequestWeather=true;
+//    private boolean result=true;
 
     //和风天气城市代码地址
     private static final String cityAddressJson="http://118.89.176.68/china-city-list.json";
@@ -68,6 +73,7 @@ public class AddCity extends AppCompatActivity {
         //设置标题栏
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_add_city);
         setSupportActionBar(toolbar);
+
 
         mSearchCity=(EditText)findViewById(R.id.search_city);
         //测试用按钮
@@ -86,6 +92,9 @@ public class AddCity extends AppCompatActivity {
         hotCityAdapter=new HotCityAdapter(hotCityDatas);
         hotCityRecyclerView.setAdapter(hotCityAdapter);
         //hotCityRecyclerView.setHasFixedSize(true);
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+//        final SharedPreferences.Editor editor=prefs.edit();
+
 
         initlizeHotCity();
         //处理输入完后的搜索事件
@@ -100,6 +109,7 @@ public class AddCity extends AppCompatActivity {
                         @Override
                         public void onItemClick(View view, int position) {
                             String mCityId=cityList.get(position).getCityId();
+
                             if(firstRequestWeather){
                                 Intent intent=new Intent(AddCity.this,WeatherActivity.class);
                                 intent.putExtra("city_id",mCityId);
@@ -109,9 +119,9 @@ public class AddCity extends AppCompatActivity {
                             }else{
                                 WeatherActivity activity=new WeatherActivity();
                                 activity.requestWeather(mCityId);
-//                                Intent intent=new Intent(AddCity.this,WeatherActivity.class);
-//                                intent.putExtra("city_id",mCityId);
-//                                startActivity(intent);
+                                Intent intent=new Intent(AddCity.this,WeatherActivity.class);
+                                intent.putExtra("city_id",mCityId);
+                                startActivity(intent);
                             }
                         }
                     });
@@ -140,9 +150,27 @@ public class AddCity extends AppCompatActivity {
             }
         });
     }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater=getMenuInflater();
+//        inflater.inflate(R.menu.city_add,menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        String mCityId=cityList.get(position).getCityId();
+//        Intent intent=new Intent(this,CityManager.class);
+//        intent.putExtra("city_id",mCityId);
+//        startActivity(intent);
+//        return true;
+//    }
+
 
     /**
-     * 根据传入的地址和类型从服务器上查询省市县数据。
+     * 从数据库上查询数据，查不到再去服务器上查
+     * 服务器上只查询一次，查询之后便把所有城市加载到了数据库
+     * 所以以后的查询都只从数据库查询
      */
     public void queryCities(String searchCity){
 
@@ -150,10 +178,12 @@ public class AddCity extends AppCompatActivity {
         cityList= DataSupport  //查询得到的全部数据放在cityList中
                 .where("provinceZh = ? or leaderZh = ? or cityZh = ?",searchCity,searchCity,searchCity)
                 .find(City.class);
-//        boolean result=cityList.contains(searchCity);
-                //如果数据库有数据，
+        boolean result=DataSupport.findAll(City.class).contains(searchCity);
+//        if(result){
+            //如果数据库有数据，
 //        if(!firstRequestFromNetWork){
             if(cityList.size()>0) {
+                //去除重复的数据
                 for ( int i = 0 ; i < cityList.size() - 1 ; i ++ ) {
                     for ( int j = cityList.size() - 1 ; j > i; j -- ) {
                         if (cityList.get(j).getCityId().equals(cityList.get(i).getCityId())) {
@@ -165,19 +195,16 @@ public class AddCity extends AppCompatActivity {
                 for(City city:cityList){
                     mCityDatas.add(city);
                 }
-
-                //mCityDatas.add(cityList.get(0));
                 cityAdapter.notifyDataSetChanged();
                 Log.d("AddCity","是从数据库查询到的城市");
-            }
-//        }
-//        else if(cityList.size()==0){
-//                Toast.makeText(this, "查不到所需要的城市", Toast.LENGTH_SHORT).show();
-//                Log.d("AddCity","查不到所需要的城市");
-//        }
-        else{
+//                return true;
+            }else {
                 queryFromServer(cityAddressJson);
             }
+//        }else{
+//            Toast.makeText(this, "查不到所需要的城市，请检查关键词重试！", Toast.LENGTH_SHORT).show();
+//        }
+
     }
     public void initlizeHotCity(){
         hotCityDatas.clear();
@@ -215,8 +242,33 @@ public class AddCity extends AppCompatActivity {
         hotCityDatas.add(taibei);
 
     }
+    public void queryFromDataBase(String searchCity){
+        //从数据库查询通过用户输入的城市名称会有多个，而每一个对应了唯一的一个ID
+        cityList= DataSupport  //查询得到的全部数据放在cityList中
+                .where("provinceZh = ? or leaderZh = ? or cityZh = ?",searchCity,searchCity,searchCity)
+                .find(City.class);
+        if(cityList.size()>0) {
+            //去除重复的数据
+            for ( int i = 0 ; i < cityList.size() - 1 ; i ++ ) {
+                for ( int j = cityList.size() - 1 ; j > i; j -- ) {
+                    if (cityList.get(j).getCityId().equals(cityList.get(i).getCityId())) {
+                        cityList.remove(j);
+                    }
+                }
+            }
+            mCityDatas.clear();//显示的列表初始化
+            for(City city:cityList){
+                mCityDatas.add(city);
+            }
+            cityAdapter.notifyDataSetChanged();
+            Log.d("AddCity","是从数据库查询到的城市");
+//                return true;
+        }else {
+            queryFromServer(cityAddressJson);
+        }
+
+    }
     public void queryFromServer(String cityAddressJson) {
-//        if(firstRequestFromNetWork){ //如果第一次从网络加载
             showProgressDialog();//加载对话框
             //建立HTTP连接
             NetworkUtils.sendOkHttpRequest(cityAddressJson, new Callback() {
@@ -229,7 +281,7 @@ public class AddCity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String returnCityName=response.body().string(); //设置希望返回的字符串
-                    boolean result=false;
+                    boolean result;
                     result=handleCityResponse(returnCityName);//处理返回的JSON数据
 
                     if(result){ //如果成功处理,就开始查询
@@ -239,14 +291,11 @@ public class AddCity extends AppCompatActivity {
                             public void run() {
                                 closeProgressDialog();
                                 Log.d("AddCity","从网络上查询到的城市");
-//                           if(mSearchCity.getText())
                                 queryCities(String.valueOf(mSearchCity.getText().toString()));
                                 Log.d("AddCity","查询"+mSearchCity.getText()+"成功");
                             }
                         });
-                    }
-                else{
-
+                    } else{
                         closeProgressDialog();
                         Looper.prepare();
                         Toast.makeText(AddCity.this, "查不到所需要的城市，请检查输入是否正确", Toast.LENGTH_SHORT).show();

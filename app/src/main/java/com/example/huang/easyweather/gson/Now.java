@@ -16,4 +16,12 @@ public class Now {
         @SerializedName("txt")
         public String info;
     }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
+    }
 }

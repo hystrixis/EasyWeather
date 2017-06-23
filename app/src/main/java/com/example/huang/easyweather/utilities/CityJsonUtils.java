@@ -52,11 +52,6 @@ public class CityJsonUtils {
                 JSONArray allcities=new JSONArray(response);
                 for (int i=0;i<allcities.length();i++){
                     JSONObject cityObject=allcities.getJSONObject(i);
-                    //String id=cityObject.getString("id");
-                   // String cityZh=cityObject.getString("cityZh");
-                  //  Log.d("MainActivity","id is "+id);
-                  //  Log.d("MainActivity","city name is "+cityZh);
-
                     City city=new City();
                     city.setCityId(cityObject.getString("id")); //城市id
                     city.setCityZh(cityObject.getString("cityZh"));//城市中文名
@@ -65,6 +60,11 @@ public class CityJsonUtils {
                     city.setCountryZh(cityObject.getString("countryZh"));//所属国家中文名
                     //储存在数据库中
                     city.save();
+//                    if(city.save()){
+//                        return true;
+//                    }else {
+//                        return false;
+//                    }
                 }
 
                 return true;

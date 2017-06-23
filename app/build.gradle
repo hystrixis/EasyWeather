@@ -35,5 +35,6 @@ dependencies {
     compile 'com.zaaach:citypicker:1.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.github.LuoGuoXin:BaseAndroid:1.0.5'
+    compile 'com.loopeer.library:itemtouchhelperextension:1.0.5'
     testCompile 'junit:junit:4.12'
 }
