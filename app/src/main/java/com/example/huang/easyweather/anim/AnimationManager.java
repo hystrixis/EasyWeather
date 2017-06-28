@@ -17,22 +17,9 @@ import static android.view.animation.Animation.REVERSE;
  */
 
 public  class AnimationManager {
-    private Animation animation;
-    private ImageView sunImageView;
-    private boolean state=false;
-//    private ImageView cloudImageView;
-//
-//    public void sunAnimation(){
-//
-//        Animation animation= AnimationUtils.loadAnimation(MyApplication.getContext(),R.anim.rotate);
-//        sunImageView=(ImageView)
-//        mColud= (ImageView) findViewById(R.id.id_img_clod);
-//        sunImageView.setAnimation(animation);
-//    }
-    //public AnimationManager(Animation)
 
     //晴天动画
-    public static void initSun(final ImageView bgView,ImageView imgView) {
+    public static void initSun(ImageView bgView,ImageView imgView) {
         //设置视图可见
         bgView.setVisibility(View.VISIBLE);
         imgView.setVisibility(View.VISIBLE);
@@ -49,7 +36,7 @@ public  class AnimationManager {
         imgView.setAnimation(animation);
     }
     //多云动画
-    public static void initCloud(final ImageView bgView,ImageView imgView) {
+    public static void initCloud(ImageView bgView,ImageView imgView) {
         //云朵水平来回平移
         bgView.setVisibility(View.VISIBLE);
         imgView.setVisibility(View.VISIBLE);
@@ -61,16 +48,18 @@ public  class AnimationManager {
         imgView.setImageResource(R.mipmap.cloud_single);
         imgView.setAnimation(animation);
     }
+    public static void initOvercast(ImageView bgView,ImageView imgView){
+        bgView.setVisibility(View.VISIBLE);
+        imgView.setVisibility(View.GONE);
+        bgView.setBackgroundResource(R.mipmap.bg_day_overcast);
+        imgView.setImageResource(0);
+    }
 
     //下雨动画
     public static void initRain(final RainView rainView){
         rainView.setVisibility(View.VISIBLE);
     }
-//    public static void cancelAllRain(final ImageView bgView,ImageView imgView,RainView rainView){
-//        bgView.setVisibility(View.GONE);
-//        imgView.setVisibility(View.GONE);
-//        rainView.setVisibility(View.GONE);
-//    }
+
     public static void initSnow(final SnowView snowView){
         snowView.setVisibility(View.VISIBLE);
     }

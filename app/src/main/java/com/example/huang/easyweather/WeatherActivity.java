@@ -29,9 +29,13 @@ import com.example.huang.easyweather.anim.SnowView;
 import com.example.huang.easyweather.gson.Forecast;
 import com.example.huang.easyweather.gson.HourlyForecast;
 import com.example.huang.easyweather.gson.Weather;
+import com.example.huang.easyweather.service.AutoUpdateService;
 import com.example.huang.easyweather.utilities.JudgeCond;
 import com.example.huang.easyweather.utilities.NetworkUtils;
 import com.example.huang.easyweather.utilities.WeatherJsonUtils;
+import com.tencent.bugly.Bugly;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,12 +53,22 @@ public class WeatherActivity extends AppCompatActivity {
     public SwipeRefreshLayout swipeRefresh;
     private String mCityId;
     private String mCityZh;
-    private String mDegree;
+    private String mDegreeMax;
+    private String mDegreeMin;
     private TextView cityBarText;
     private TextView titleCity;
     private TextView titleCond;
     private TextView titleUpdateTime;
     private TextView titleDegree;
+
+    private TextView qltyText;
+    private TextView aqiText;
+    private TextView pm10Text;
+    private TextView pm25Text;
+    private TextView coText;
+    private TextView no2Text;
+    private TextView o3Text;
+    private TextView so2Text;
 
     private TextView comfortText;
     private TextView carWashText;
@@ -82,6 +96,7 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bugly.init(this, "fb11b988bc", false);
         //沉浸式状态栏的兼容性配置
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
@@ -112,8 +127,8 @@ public class WeatherActivity extends AppCompatActivity {
 
 
 
-        //每日一图布局
-        bingPicImg=(ImageView)findViewById(R.id.bing_pic_img);
+//        //每日一图布局
+//        bingPicImg=(ImageView)findViewById(R.id.bing_pic_img);
         //添加城市菜单
         addCity=(ImageButton) findViewById(R.id.add_city);
         addCity.getBackground().setAlpha(0);
@@ -128,6 +143,17 @@ public class WeatherActivity extends AppCompatActivity {
         titleCond=(TextView)findViewById(R.id.cond) ;
         titleUpdateTime=(TextView)findViewById(R.id.update_time);
         titleDegree=(TextView)findViewById(R.id.degree);
+        /*
+        qlty
+         */
+        qltyText=(TextView)findViewById(R.id.qlty_text);
+        aqiText=(TextView)findViewById(R.id.aqi_text);
+        pm10Text=(TextView)findViewById(R.id.pm10_text);
+        pm25Text=(TextView)findViewById(R.id.pm25_text);
+        coText=(TextView)findViewById(R.id.co_text);
+        no2Text=(TextView)findViewById(R.id.no2_text);
+        o3Text=(TextView)findViewById(R.id.o3_text);
+        so2Text=(TextView)findViewById(R.id.so2_text);
         /*
         suggestion
          */
@@ -172,7 +198,6 @@ public class WeatherActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         Weather weather = WeatherJsonUtils.handleWeatherResponse(weatherString);
-//        mCityId=weather.basic.cityId;
 
 
         if (weatherString != null && beforeWeatherInfo) {
@@ -250,34 +275,6 @@ public class WeatherActivity extends AppCompatActivity {
 //            loadBingPic();
 //        }
     }
-    /**
-     * 加载必应每日一图
-     */
-    private void loadBingPic() {
-        String requestBingPic = "http://guolin.tech/api/bing_pic";
-        NetworkUtils.sendOkHttpRequest(requestBingPic, new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String bingPic = response.body().string();
-                //缓存所需要的Bing图片
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
-                editor.putString("bing_pic", bingPic);
-                editor.apply();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //在UI线程中加载图片并显示
-                        Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
     /*
      根据天气id请求天气数据
      */
@@ -294,7 +291,6 @@ public class WeatherActivity extends AppCompatActivity {
                     }
                 });
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String returnWeatherInfo= response.body().string();
@@ -310,6 +306,8 @@ public class WeatherActivity extends AppCompatActivity {
                             editor.apply();
                             mCityId=weather.basic.cityId;
                             showWeatherInfo(weather);
+                            Intent intent=new Intent(WeatherActivity.this, AutoUpdateService.class);
+                            startService(intent);
                         }
 //                        else {
 //                            Toast.makeText(WeatherActivity.this, "获取天气失败", Toast.LENGTH_SHORT).show();
@@ -319,18 +317,18 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
         });
-//        loadBingPic();
     }
     private void sendCityAndDegree(Weather weather){
         mCityId=weather.basic.cityId;
         mCityZh=weather.basic.cityZh;
-        mDegree=weather.now.temperature+"°";
-        Log.d("CityManager",mCityId+"\t"+mCityZh+"\t"+mDegree);
+        mDegreeMax=weather.forecastList.get(0).temperature.max+"°";
+        mDegreeMin=weather.forecastList.get(0).temperature.min+"°";
         Intent intent=new Intent(WeatherActivity.this,CityManager.class);
         intent.putExtra("city_id",mCityId);
         intent.putExtra("city_zh",mCityZh);
-        intent.putExtra("degree",mDegree);
-        Log.d("CityManager","要传出去的城市和温度："+mCityId+"\t"+mCityZh+"\t"+mDegree);
+        intent.putExtra("degree_max",mDegreeMax);
+        intent.putExtra("degree_min",mDegreeMin);
+        Log.d("CityManager","要传出去的城市和温度："+mCityId+"\t"+mCityZh+"\t"+mDegreeMax+"\t"+mDegreeMin);
         startActivity(intent);
     }
 
@@ -339,7 +337,6 @@ public class WeatherActivity extends AppCompatActivity {
         String cond=weather.now.more.info;
         String updateTime=weather.basic.update.updateTime.split(" ")[1];//更新时间
         String degree=weather.now.temperature+"℃";//当前天气温度
-        //getSupportActionBar().setTitle(cityZh);
         judgeCond(cond,bgView,imgView,rainView,snowView);//判断当前天气并加载相应的动画
         titleCity.setText(cityZh);
         titleCond.setText(cond);
@@ -357,14 +354,43 @@ public class WeatherActivity extends AppCompatActivity {
             forecastDatas.add(forecast);
         }
         forecastAdapter.notifyDataSetChanged();
+        //加载空气质量数据
+        if(weather.aqi==null){
+            qltyText.setText("空气等级 暂无");
+            aqiText.setText("指数 暂无");
+            pm10Text.setText("暂无");
+            pm25Text.setText("暂无");
+            coText.setText("暂无");
+            no2Text.setText("暂无");
+            o3Text.setText("暂无");
+            so2Text.setText("暂无");
+        }else{
+            String qlty=weather.aqi.city.qlty;
+            String aqi=weather.aqi.city.aqi;
+            String pm10=weather.aqi.city.pm10;
+            String pm25=weather.aqi.city.pm25;
+            String co=weather.aqi.city.co;
+            String no2=weather.aqi.city.no2;
+            String o3=weather.aqi.city.o3;
+            String so2=weather.aqi.city.so2;
+            Log.d("WeatherActivity",co+"\t"+no2+"\t"+o3+"\t"+so2);
+            if(qlty==null)qltyText.setText("暂无");else qltyText.setText(qlty);
+            if(aqi==null) aqiText.setText("暂无");else aqiText.setText("指数 "+aqi);
+            if(pm10==null)pm10Text.setText("暂无");else pm10Text.setText(pm10);
+            if(pm25==null) pm25Text.setText("暂无");else pm25Text.setText(pm25);
+            if(co==null) coText.setText("暂无");else  coText.setText(co);
+            if(no2==null) no2Text.setText("暂无");else   no2Text.setText(no2);
+            if(o3==null)o3Text.setText("暂无");else o3Text.setText(o3);
+            if(so2==null)so2Text.setText("暂无");else  so2Text.setText(so2);
+        }
         //加载生活建议数据
-        String comfort = "舒适度：" + weather.suggestion.comfort.info;
-        String carWash = "洗车指数：" + weather.suggestion.carWash.info;
-        String dress = "穿衣指数：" + weather.suggestion.dress.info;
-        String influenza = "感冒指数：" + weather.suggestion.influenza.info;
-        String sport = "运动指数：" + weather.suggestion.sport.info;
-        String travel = "旅行指数：" + weather.suggestion.travel.info;
-        String ultraviolet = "紫外线指数：" + weather.suggestion.ultraviolet.info;
+        String comfort = "舒适度：" + weather.suggestion.comfort.brief+"\n" +weather.suggestion.comfort.info;
+        String carWash = "洗车指数：" + weather.suggestion.carWash.brief+"\n"+weather.suggestion.carWash.info;
+        String dress = "穿衣指数：" + weather.suggestion.dress.brief+"\n"+weather.suggestion.dress.info;
+        String influenza = "感冒指数：" + weather.suggestion.dress.brief+"\n"+weather.suggestion.influenza.info;
+        String sport = "运动指数：" + weather.suggestion.sport.brief+"\n"+weather.suggestion.sport.info;
+        String travel = "旅行指数：" + weather.suggestion.travel.brief+"\n"+weather.suggestion.travel.info;
+        String ultraviolet = "紫外线指数：" +weather.suggestion.ultraviolet.brief+"\n"+ weather.suggestion.ultraviolet.info;
         comfortText.setText(comfort);
         carWashText.setText(carWash);
         dressText.setText(dress);

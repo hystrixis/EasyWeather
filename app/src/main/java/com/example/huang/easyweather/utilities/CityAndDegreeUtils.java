@@ -7,12 +7,13 @@ import com.example.huang.easyweather.data.CityAndDegree;
  */
 
 public class CityAndDegreeUtils {
-    public static boolean handleCityAndDegree(String mCityId,String mCityZh,String mDegree){
+    public static boolean handleCityAndDegree(String mCityId,String mCityZh,String mDegreeMax,String mDegreeMin){
         try{
             CityAndDegree cityAndDegree=new CityAndDegree();
             cityAndDegree.setCityId(mCityId);
             cityAndDegree.setCityZh(mCityZh);
-            cityAndDegree.setDegree(mDegree);
+            cityAndDegree.setDegreeMax(mDegreeMax);
+            cityAndDegree.setDegreeMin(mDegreeMin);
             cityAndDegree.save();
             return true;
         }catch (Exception e){

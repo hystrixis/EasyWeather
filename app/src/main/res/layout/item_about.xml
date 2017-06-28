@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/title_introduce"
+            android:textSize="20sp"
+            android:drawableStart="@drawable/thanks_heart"
+            android:drawablePadding="10dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#dadada"
+            android:layout_marginTop="8dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/text_introduce"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:text="@string/title_function"
+            android:textSize="20sp"
+            android:drawableStart="@drawable/star_empty"
+            android:drawablePadding="10dp"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#dadada"
+            android:layout_marginTop="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/source_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="@string/title_source_code"
+                android:drawableStart="@drawable/open_source" />
+            <TextView
+                android:id="@+id/csdn_blog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="@string/title_csdn_blog"
+                android:drawableStart="@drawable/csdn" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/donate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="@string/title_donate"
+                android:drawableStart="@drawable/donate" />
+            <TextView
+                android:id="@+id/share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="@string/title_share"
+                android:drawableStart="@drawable/share" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/qq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="@string/title_contact_qq"
+                android:drawableStart="@drawable/qq" />
+            <TextView
+                android:id="@+id/suggest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="@string/title_suggest"
+                android:drawableStart="@drawable/suggest" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="20dp"
+            android:text="@string/title_opensource"
+            android:textSize="20sp"
+            android:drawableStart="@drawable/frame"
+            android:drawablePadding="10dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#dadada"
+            android:layout_marginTop="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:autoLink="web"
+            android:maxLines="20"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/text_opensource"
+            />
+    </LinearLayout>
+
+</LinearLayout>

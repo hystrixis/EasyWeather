@@ -1,5 +1,6 @@
 package com.example.huang.easyweather.utilities;
 
+import android.view.View;
 import android.widget.ImageView;
 
 import com.example.huang.easyweather.R;
@@ -36,7 +37,7 @@ public class JudgeCond {
             case "中雪":AnimationManager.initSnow(snowView);break;
             case "大雪":AnimationManager.initSnow(snowView);break;
 
-            case "阴":AnimationManager.removeAllView(rainView,snowView);bgView.setBackgroundResource(R.mipmap.bg_day_overcast);break;
+            case "阴":AnimationManager.removeAllView(rainView,snowView);AnimationManager.initOvercast(bgView,imgView);break;
             default:AnimationManager.removeAllView(rainView,snowView);AnimationManager.initSun(bgView,imgView);
         }
     }

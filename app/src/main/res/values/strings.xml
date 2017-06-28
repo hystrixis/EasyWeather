@@ -1,3 +1,78 @@
 <resources>
     <string name="app_name">易用天气</string>
+
+    <string name="title_hourly_weather">每三小时预报</string>
+    <string name="title_forecast">未来天气预报</string>
+    <string name="title_aqi">空气质量</string>
+    <string name="title_suggestion">生活建议</string>
+    <string name="title_hotcity">热门城市</string>
+    <string name="swipe_delete">删除</string>
+    <string name="hint_search_city">请输入城市名称</string>
+
+
+    <string name="pm10_aqi">PM10</string>
+    <string name="pm25_aqi">PM2.5</string>
+    <string name="co_aqi">一氧化碳CO</string>
+    <string name="no2_aqi">二氧化氮NO2</string>
+    <string name="o3_aqi">臭氧O3</string>
+    <string name="so2_aqi">二氧化硫SO2</string>
+
+    <string name="suggest_comfort">舒适度</string>
+    <string name="suggest_carwash">洗车指数</string>
+    <string name="suggest_dress">穿衣指数</string>
+    <string name="suggest_influenza">感冒指数</string>
+    <string name="suggest_sport">运动指数</string>
+    <string name="suggest_travel">旅游指数</string>
+    <string name="suggest_ultraviolet">紫外线指数</string>
+
+    <string name="title_introduce">这么幸运遇见你</string>
+    <string name="text_introduce">
+        \t\t 非常感谢你能来我这里！这个项目是从5.27开始写，期间因为考试，课设等原因一直断断续续的，
+        目前还是在更新。这是我写的第一个Android项目，有很多不足还请多多指教。在追梦的路上，
+        我将乘着知识的小船，向青草更青处漫溯，在星辉斑斓里放歌，永远保持着谦恭和初心。
+    </string>
+    <string name="title_function">请随意浏览&#8230;</string>
+    <string name="title_source_code">项目源码</string>
+    <string name="title_csdn_blog">个人博客</string>
+    <string name="title_donate">打赏支持</string>
+    <string name="title_share">分享APP</string>
+    <string name="text_share">一款简洁易用、无广告的天气APP，你值得拥有。下载地址：http://118.89.176.68/downloads/app-release.apk</string>
+    <string name="title_contact_qq">交流联系</string>
+    <string name="title_suggest">意见反馈</string>
+    <string name="title_opensource">感谢这个开源的世界</string>
+    <string name="text_opensource">
+        1.Okhttp网络请求框架 http://square.github.io/okhttp/ \n
+        2.Butter Knife注解框架 https://github.com/JakeWharton/butterknife/ \n
+        3.LitePal数据库操作框架 https://github.com/LitePalFramework/LitePal \n
+        4.Gson json数据解析框架 https://github.com/google/gson \n
+        5.itemtouchhelper-extension侧滑删除框架 https://github.com/loopeer/itemtouchhelper-extension/ \n
+        6.和风天气提供的天气数据 https://www.heweather.com/ \n
+        7.腾讯Bugly的检测更新 https://bugly.qq.com/v2/index/ \n
+        8.极光推送通知 https://www.jiguang.cn/ \n
+        9.w77996的多知天气获得的设计灵感 https://github.com/w77996/Weather/ \n
+    </string>
+    <string name="pref_key_internet">internet</string>
+    <string name="pref_key_wifi_update">wifi_update</string>
+    <string name="pref_key_update_frequency">update_frequency</string>
+
+    <string name="pref_title_internet">更新设置</string>
+    <string name="pref_title_wifi_update">wifi下自动更新</string>
+    <string name="pref_summaryOn_wifi_update">已开启自动更新</string>
+    <string name="pref_summaryOff_wifi_update">已关闭自动更新</string>
+
+    <string name="pref_title_update_frequency">更新频率</string>
+    <string name="pref_dialog_update_frequency">选择更新间隔</string>
+    <string name="pref_summary_update_frequency">30分钟</string>
+    <string name="pref_value_update_frequency">30</string>
+
+    <string name="pref_key_about">about</string>
+    <string name="pref_title_about">关于</string>
+    <string name="pref_key_update">update</string>
+    <string name="pref_title_update">检测更新</string>
+
+    <string name="pref_title_github">github地址</string>
+    <string name="pref_title_donate">赞赏</string>
+
+    <string name="menu_add">添加</string>
+    <string name="menu_settings">设置</string>
 </resources>

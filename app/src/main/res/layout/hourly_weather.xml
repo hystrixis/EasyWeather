@@ -5,9 +5,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:text="每小时预报"
+        android:text="@string/title_hourly_weather"
         android:textSize="20sp"/>
     <View
         android:layout_width="match_parent"

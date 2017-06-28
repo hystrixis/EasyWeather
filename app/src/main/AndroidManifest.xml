@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.huang.easyweather">
-
+    
+    <uses-permission android:name="com.example.huang.easyweather.permission.JPUSH_MESSAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
 
     <application
-        android:name="com.example.huang.easyweather.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
@@ -24,10 +36,24 @@
         <activity
             android:name=".AddCity"
             android:label="添加城市"
-            android:windowSoftInputMode="stateHidden|adjustUnspecified"
-            />
-        <activity android:name=".WeatherActivity" />
-        <activity android:name=".CityManager"></activity>
+            android:windowSoftInputMode="stateHidden|adjustUnspecified" />
+        <activity android:name=".WeatherActivity"/>
+        <activity android:name=".CityManager" />
+        <activity android:name=".settings.SettingsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:theme="@android:style/Theme.Translucent" />
+        <service
+            android:name=".service.AutoUpdateService"
+            android:enabled="true"
+            android:exported="true" />
+        <activity android:name=".About"/>
     </application>
 
 </manifest>

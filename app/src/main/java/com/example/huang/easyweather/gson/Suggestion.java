@@ -21,30 +21,44 @@ public class Suggestion {
     @SerializedName("uv")
     public Ultraviolet ultraviolet;
     public class Comfort{
+        @SerializedName("brf")
+        public String brief;
         @SerializedName("txt")
         public String info;
 }
     public class CarWash{
+        @SerializedName("brf")
+        public String brief;
         @SerializedName("txt")
         public String info;
     }
     public class  Dress{
+        @SerializedName("brf")
+        public String brief;
         @SerializedName("txt")
         public String info;
     }
     public class Influenza{
+        @SerializedName("brf")
+        public String brief;
         @SerializedName("txt")
         public String info;
     }
     public class Sport{
+        @SerializedName("brf")
+        public String brief;
         @SerializedName("txt")
         public String info;
     }
     public class Travel{
+        @SerializedName("brf")
+        public String brief;
         @SerializedName("txt")
         public String info;
     }
     public class Ultraviolet{
+        @SerializedName("brf")
+        public String brief;
         @SerializedName("txt")
         public String info;
     }

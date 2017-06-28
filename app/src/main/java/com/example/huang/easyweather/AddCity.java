@@ -6,12 +6,15 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -53,7 +56,7 @@ public class AddCity extends AppCompatActivity {
     private List<City> mCityDatas=new ArrayList<>();//当前视图列表
     private  ProgressDialog progressDialog;
     private EditText mSearchCity;
-    private Button mSearch;
+    private SearchView mSearchView;
     private RecyclerView mRecyclerView;//城市RecyclerView
     private RecyclerView hotCityRecyclerView;
     private List<City> cityList; //城市列表
@@ -73,11 +76,16 @@ public class AddCity extends AppCompatActivity {
         //设置标题栏
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_add_city);
         setSupportActionBar(toolbar);
-
+        ActionBar actionBar=this.getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         mSearchCity=(EditText)findViewById(R.id.search_city);
-        //测试用按钮
-        mSearch=(Button)findViewById(R.id.search);
+        mSearchView=(SearchView)findViewById(R.id.search_view);
+        mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.setIconifiedByDefault(false);
+        mSearchView.setQueryHint("请输入中文城市名称");
 
         mRecyclerView=(RecyclerView)findViewById(R.id.city_recycler_view);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);//指定RecyclerView的布局方式
@@ -91,10 +99,6 @@ public class AddCity extends AppCompatActivity {
         hotCityRecyclerView.setLayoutManager(gridLayoutManager);
         hotCityAdapter=new HotCityAdapter(hotCityDatas);
         hotCityRecyclerView.setAdapter(hotCityAdapter);
-        //hotCityRecyclerView.setHasFixedSize(true);
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//        final SharedPreferences.Editor editor=prefs.edit();
-
 
         initlizeHotCity();
         //处理输入完后的搜索事件
@@ -103,8 +107,8 @@ public class AddCity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId== EditorInfo.IME_ACTION_SEARCH){
 //                    mSearchCity.setInputType(InputType.TYPE_NULL);//失去编辑框的焦点
-                    queryCities(String.valueOf(mSearchCity.getText().toString()));
-
+                    //queryCities(String.valueOf(mSearchCity.getText().toString()));
+                    queryFromServer(cityAddressJson);
                     cityAdapter.setOnItemClickListener(new CityAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
@@ -130,7 +134,38 @@ public class AddCity extends AppCompatActivity {
                 return false;
             }
         });
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                queryFromServer(cityAddressJson);
+                mSearchView.clearFocus();
+                cityAdapter.setOnItemClickListener(new CityAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        String mCityId=cityList.get(position).getCityId();
+                        if(firstRequestWeather){
+                            Intent intent=new Intent(AddCity.this,WeatherActivity.class);
+                            intent.putExtra("city_id",mCityId);
+                            startActivity(intent);
+                            firstRequestWeather=false;
+                            finish();
+                        }else{
+                            WeatherActivity activity=new WeatherActivity();
+                            activity.requestWeather(mCityId);
+                            Intent intent=new Intent(AddCity.this,WeatherActivity.class);
+                            intent.putExtra("city_id",mCityId);
+                            startActivity(intent);
+                        }
+                    }
+                });
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         hotCityAdapter.setOnItemClickListener(new HotCityAdapter.OnItemClickListener() {
             @Override
@@ -143,28 +178,14 @@ public class AddCity extends AppCompatActivity {
                     finish();
             }
         });
-        mSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                queryFromServer(cityAddressJson);
-            }
-        });
+//        mSearch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                queryFromServer(cityAddressJson);
+//            }
+//        });
     }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater=getMenuInflater();
-//        inflater.inflate(R.menu.city_add,menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        String mCityId=cityList.get(position).getCityId();
-//        Intent intent=new Intent(this,CityManager.class);
-//        intent.putExtra("city_id",mCityId);
-//        startActivity(intent);
-//        return true;
-//    }
+
 
 
     /**
@@ -172,7 +193,7 @@ public class AddCity extends AppCompatActivity {
      * 服务器上只查询一次，查询之后便把所有城市加载到了数据库
      * 所以以后的查询都只从数据库查询
      */
-    public void queryCities(String searchCity){
+    public boolean queryCities(String searchCity){
 
         //从数据库查询通过用户输入的城市名称会有多个，而每一个对应了唯一的一个ID
         cityList= DataSupport  //查询得到的全部数据放在cityList中
@@ -197,13 +218,12 @@ public class AddCity extends AppCompatActivity {
                 }
                 cityAdapter.notifyDataSetChanged();
                 Log.d("AddCity","是从数据库查询到的城市");
-//                return true;
-            }else {
-                queryFromServer(cityAddressJson);
+                return true;
+            }else{
+//                queryFromServer(cityAddressJson);
+                return false;
             }
-//        }else{
-//            Toast.makeText(this, "查不到所需要的城市，请检查关键词重试！", Toast.LENGTH_SHORT).show();
-//        }
+
 
     }
     public void initlizeHotCity(){
@@ -242,33 +262,10 @@ public class AddCity extends AppCompatActivity {
         hotCityDatas.add(taibei);
 
     }
-    public void queryFromDataBase(String searchCity){
-        //从数据库查询通过用户输入的城市名称会有多个，而每一个对应了唯一的一个ID
-        cityList= DataSupport  //查询得到的全部数据放在cityList中
-                .where("provinceZh = ? or leaderZh = ? or cityZh = ?",searchCity,searchCity,searchCity)
-                .find(City.class);
-        if(cityList.size()>0) {
-            //去除重复的数据
-            for ( int i = 0 ; i < cityList.size() - 1 ; i ++ ) {
-                for ( int j = cityList.size() - 1 ; j > i; j -- ) {
-                    if (cityList.get(j).getCityId().equals(cityList.get(i).getCityId())) {
-                        cityList.remove(j);
-                    }
-                }
-            }
-            mCityDatas.clear();//显示的列表初始化
-            for(City city:cityList){
-                mCityDatas.add(city);
-            }
-            cityAdapter.notifyDataSetChanged();
-            Log.d("AddCity","是从数据库查询到的城市");
-//                return true;
-        }else {
-            queryFromServer(cityAddressJson);
-        }
 
-    }
     public void queryFromServer(String cityAddressJson) {
+        if(!queryCities(String.valueOf(mSearchView.getQuery()))){
+            mCityDatas.clear();//显示的列表初始化
             showProgressDialog();//加载对话框
             //建立HTTP连接
             NetworkUtils.sendOkHttpRequest(cityAddressJson, new Callback() {
@@ -286,13 +283,16 @@ public class AddCity extends AppCompatActivity {
 
                     if(result){ //如果成功处理,就开始查询
                         runOnUiThread(new Runnable() {
-
                             @Override
                             public void run() {
                                 closeProgressDialog();
                                 Log.d("AddCity","从网络上查询到的城市");
-                                queryCities(String.valueOf(mSearchCity.getText().toString()));
-                                Log.d("AddCity","查询"+mSearchCity.getText()+"成功");
+                                if(queryCities(String.valueOf(mSearchView.getQuery()))){
+//                                    Log.d("AddCity","查询"+mSearchCity.getText()+"成功");
+                                }else {
+                                    Toast.makeText(AddCity.this, "查不到所需要的城市，请检查输入是否正确", Toast.LENGTH_SHORT).show();
+                                }
+
                             }
                         });
                     } else{
@@ -303,6 +303,8 @@ public class AddCity extends AppCompatActivity {
                     }
                 }
             });
+        }
+
     }
 
     /**
@@ -326,4 +328,11 @@ public class AddCity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

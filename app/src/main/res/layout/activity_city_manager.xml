@@ -9,12 +9,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_add_city"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:gravity="center"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
+        android:layout_height="?attr/actionBarSize">
     </android.support.v7.widget.Toolbar>
     <TextView
         android:id="@+id/auto_location"

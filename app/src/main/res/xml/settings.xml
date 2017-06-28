@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<CheckBoxPreference-->
+        <!--android:key="pref_key_auto_update"-->
+        <!--android:title="自动更新"-->
+        <!--android:summaryOn="开启自动更新"-->
+        <!--android:summaryOff="关闭自动更新"-->
+        <!--android:defaultValue="true"/>-->
+    <PreferenceCategory
+        android:key="@string/pref_key_internet"
+        android:title="@string/pref_title_internet">
+        <CheckBoxPreference
+            android:key="@string/pref_key_wifi_update"
+            android:title="@string/pref_title_wifi_update"
+            android:summaryOn="@string/pref_summaryOn_wifi_update"
+            android:summaryOff="@string/pref_summaryOff_wifi_update"
+            android:defaultValue="true"/>
+        <ListPreference
+            android:key="@string/pref_key_update_frequency"
+            android:title="@string/pref_title_update_frequency"
+            android:dependency="@string/pref_key_wifi_update"
+            android:entries="@array/auto_update_frequency_entry"
+            android:entryValues="@array/auto_update_frequency_value"
+            android:dialogTitle="@string/pref_dialog_update_frequency"
+           android:defaultValue="@string/pref_value_update_frequency">
+        </ListPreference>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_title_about">
+        <Preference
+            android:key="@string/pref_key_about"
+            android:title="@string/pref_title_about">
+        </Preference>
+        <Preference
+            android:key="@string/pref_key_update"
+            android:title="@string/pref_title_update">
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

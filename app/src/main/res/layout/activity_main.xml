@@ -32,5 +32,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="进入天气界面"/>
+    <Button
+        android:id="@+id/goto_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="进入设置界面"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="本界面为调试界面!可不要随意乱点哦！"
+        android:textSize="50sp"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"/>
 
 </LinearLayout>

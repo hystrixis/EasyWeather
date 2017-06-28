@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.huang.easyweather.WeatherActivity">
-    <ImageView
-        android:id="@+id/bing_pic_img"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+    <!--<ImageView-->
+        <!--android:id="@+id/bing_pic_img"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scaleType="centerCrop" />-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
@@ -81,19 +81,20 @@
                     <android.support.v4.widget.NestedScrollView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#fff"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior">
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            >
+                            android:layout_height="wrap_content">
 
                             <include layout="@layout/hourly_weather"/>
 
                             <include layout="@layout/forecast"/>
 
+                            <include layout="@layout/aqi"/>
+
                             <include layout="@layout/suggestion"/>
+
                         </LinearLayout>
 
                     </android.support.v4.widget.NestedScrollView>

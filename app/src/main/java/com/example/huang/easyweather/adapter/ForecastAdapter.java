@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.huang.easyweather.R;
@@ -29,7 +30,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         Forecast forecast=forecastDatas.get(position);
         holder.listItemForecastDataView.setText(forecast.date);
-        holder.listItemForecastInfoView.setText(forecast.more.info);
+        holder.listItemForecastInfoView.setImageResource(HourlyForecastAdapter.initImage(forecast.more.info));
         holder.listItemForecastMaxView.setText(forecast.temperature.max);
         holder.listItemForecastMinView.setText(forecast.temperature.min);
     }
@@ -48,14 +49,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView listItemForecastDataView;
-        TextView listItemForecastInfoView;
+        ImageView listItemForecastInfoView;
         TextView listItemForecastMaxView;
         TextView listItemForecastMinView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             listItemForecastDataView=(TextView)itemView.findViewById(R.id.date_text);
-            listItemForecastInfoView=(TextView)itemView.findViewById(R.id.info_text);
+            listItemForecastInfoView=(ImageView) itemView.findViewById(R.id.info_text);
             listItemForecastMaxView=(TextView)itemView.findViewById(R.id.max_text);
             listItemForecastMinView=(TextView)itemView.findViewById(R.id.min_text);
         }

@@ -63,11 +63,9 @@ public class CityManagerAdapter extends RecyclerView.Adapter<CityManagerAdapter.
     @Override
     public void onBindViewHolder(final CityManagerAdapter.ViewHolder holder, int position) {
         CityAndDegree cityAndDegree=mCityAndDegreeDatas.get(position);
-        Log.d("CityManager","城市ID:"+cityAndDegree.getCityId());
-        Log.d("CityManager","城市名称:"+cityAndDegree.getCityZh());
-        Log.d("CityManager","城市温度:"+cityAndDegree.getDegree());
         holder.listItemCityManagerView.setText(cityAndDegree.getCityZh());
-        holder.listItemDegreeManagerView.setText(cityAndDegree.getDegree());
+        holder.listItemDegreeMaxView.setText(cityAndDegree.getDegreeMax()+"/");
+        holder.listItemDegreeMinView.setText(cityAndDegree.getDegreeMin());
         //将position保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(position);
         if (holder instanceof ItemSwipeWithActionWidthViewHolder) {
@@ -126,13 +124,15 @@ public class CityManagerAdapter extends RecyclerView.Adapter<CityManagerAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView listItemCityManagerView;
-        TextView listItemDegreeManagerView;
+        TextView listItemDegreeMaxView;
+        TextView listItemDegreeMinView;
         public View mViewContent;
         public View mActionContainer;
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             listItemCityManagerView=(TextView)itemView.findViewById(R.id.city_manager);
-            listItemDegreeManagerView=(TextView)itemView.findViewById(R.id.degree_manager);
+            listItemDegreeMaxView=(TextView)itemView.findViewById(R.id.degree_max);
+            listItemDegreeMinView=(TextView)itemView.findViewById(R.id.degree_min);
             mViewContent = itemView.findViewById(R.id.list_manager);
             mActionContainer = itemView.findViewById(R.id.view_list_repo_action_container);
             itemView.setOnTouchListener(new View.OnTouchListener() {

@@ -9,7 +9,8 @@ import org.litepal.crud.DataSupport;
 public class CityAndDegree extends DataSupport{
     private String cityId;
     private String cityZh;
-    private String degree;
+    private String degreeMax;
+    private String degreeMin;
 
     public String getCityId() {
         return cityId;
@@ -27,15 +28,23 @@ public class CityAndDegree extends DataSupport{
         this.cityZh = cityZh;
     }
 
-    public String getDegree() {
-        return degree;
+    public String getDegreeMax() {
+        return degreeMax;
     }
 
-    public void setDegree(String degree) {
-        this.degree = degree;
+    public void setDegreeMax(String degreeMax) {
+        this.degreeMax = degreeMax;
     }
 
-//    public CityAndDegree(String cityZh, String degree) {
+    public String getDegreeMin() {
+        return degreeMin;
+    }
+
+    public void setDegreeMin(String degreeMin) {
+        this.degreeMin = degreeMin;
+    }
+
+    //    public CityAndDegree(String cityZh, String degree) {
 //        this.cityZh = cityZh;
 //        this.degree = degree;
 //    }

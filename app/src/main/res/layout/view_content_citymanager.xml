@@ -8,15 +8,23 @@
     android:background="@android:color/white"
     android:padding="@dimen/activity_vertical_margin"
     tools:showIn="@layout/list_item_citymanager"
-    android:weightSum="1">
+    android:weightSum="2">
         <TextView
             android:id="@+id/city_manager"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="asdfas"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/degree_max"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="aaaaa"
             android:layout_weight="0.5"/>
         <TextView
-            android:id="@+id/degree_manager"
+            android:id="@+id/degree_min"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="aaaaa"

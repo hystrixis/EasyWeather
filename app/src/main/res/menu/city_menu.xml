@@ -2,10 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_refresh"
+        android:id="@+id/action_add"
         app:showAsAction="ifRoom"
-        android:title="添加"
+        android:title="@string/menu_add"
+        android:icon="@drawable/plus_black"
         android:orderInCategory="1">
     </item>
-
+    <item
+        android:id="@+id/action_settings"
+        app:showAsAction="never"
+        android:title="@string/menu_settings" />
 </menu>
