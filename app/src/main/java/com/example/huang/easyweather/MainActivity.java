@@ -24,58 +24,56 @@ public class MainActivity extends AppCompatActivity {
     private Button deleteCity;
     private Button gotoWeather;
     private Button gotoSettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //设置标题栏
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-        mSearchCity=(Button)findViewById(R.id.go_queryCity);
-        deleteCity=(Button)findViewById(R.id.delete_database);
-        gotoWeather=(Button)findViewById(R.id.goto_weather);
-        gotoSettings=(Button)findViewById(R.id.goto_settings);
+        mSearchCity = (Button) findViewById(R.id.go_queryCity);
+        deleteCity = (Button) findViewById(R.id.delete_database);
+        gotoWeather = (Button) findViewById(R.id.goto_weather);
+        gotoSettings = (Button) findViewById(R.id.goto_settings);
         mSearchCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,AddCity.class);
+                Intent intent = new Intent(MainActivity.this, AddCity.class);
                 startActivity(intent);
             }
         });
         deleteCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // deleteDatabase("easy_weather");
                 DataSupport.deleteAll(City.class);
-                Log.d("MainActivity","删除城市数据库成功");
+                Log.d("MainActivity", "删除城市数据库成功");
             }
         });
         gotoWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,WeatherActivity.class);
+                Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
                 startActivity(intent);
             }
         });
         gotoSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this, SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
         });
-        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
-        if(prefs.getString("weather",null)!=null){
-            Intent intent=new Intent(this,WeatherActivity.class);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getString("weather", null) != null) {
+            Intent intent = new Intent(this, WeatherActivity.class);
             startActivity(intent);
             finish();
-        }else{
-            Intent intent=new Intent(this,AddCity.class);
+        } else {
+            Intent intent = new Intent(this, AddCity.class);
             startActivity(intent);
             finish();
         }
-
-
     }
 }

@@ -67,7 +67,7 @@ public class AddCity extends AppCompatActivity {
 //    private boolean result=true;
 
     //和风天气城市代码地址
-    private static final String cityAddressJson="http://118.89.176.68/china-city-list.json";
+    private static final String cityAddressJson="https://github.com/sicelex/EasyWeather/blob/master/china-city-list.json";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
